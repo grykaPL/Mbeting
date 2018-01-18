@@ -1,20 +1,40 @@
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Hashtable;
+import java.io.IOException;
 
-import org.apache.bcel.generic.NEW;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import com.google.common.collect.Table;
+
 
 public class main {
 
 	private static String google="http://www.google.com";
 
 	public static void main(String[] args) {
+		
+		String url="https://sports.bwin.com/pl/sports#sportId=4";
+		try {
+			Document page = Jsoup.connect(url).get();
+			System.out.println("Strona: ''"+page.title()+"'' za³adowana");
+			Element klasa = page.getElementsByClass("mg-table").first();
+			System.out.println("klasa pusta:"+ klasa.empty());
+			
+			klasa=page.getElementsByClass("mg-option-button__option-odds ").first();
+			//String wynik = klasa.toString();
+			System.out.println(klasa.toString());
+			
+		} catch (IOException e) {
+			System.out.println("stron anei zaladowana");
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
 		
 	/*	Hashtable<Integer, wydarzenie> tablica = new Hashtable<>();
 		String data="";
@@ -26,14 +46,21 @@ public class main {
 		//bwin.run();
 		System.out.println("nazwa:");
 		System.out.println(nazwa(data));*/
-		
+		/*
 	
 		login login = new login();
 		login.start();
-		
+		*/
 		
 		
 		}
+	
+	public int wyswietlWyniki()
+	{
+		
+		return 0;
+	}
+	
 	public static String nazwa(String s) {
 		String[] tab = s.split("( )|(\\n)");
 		System.out.println("podzielone"+ String.valueOf(tab.length));
