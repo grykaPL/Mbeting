@@ -15,15 +15,50 @@ public class main {
 	public static void main(String[] args) {
 		
 		String url="https://sports.bwin.com/pl/sports#sportId=4";
+		String classSerie="mg-group-header-link",tabelaSeria="";
+		int count=0,exceptions=0;
+		boolean isNew=false;
+
+		
+		
+		
 		try {
 			Document page = Jsoup.connect(url).get();
 			System.out.println("Strona: ''"+page.title()+"'' za³adowana");
-			Element klasa = page.getElementsByClass("mg-table").first();
-			System.out.println("klasa pusta:"+ klasa.empty());
+			Elements mgTables =page.getElementsByClass("mg-table");
+			Element mgTable = mgTables.get(0);                                     //pobiera pierwsza tabele z wynikami
+			System.out.println("mgTable:  "+ mgTable.text());
+			Element seria = page.getElementsByClass(classSerie).first();
+			Element tBody =mgTable.getElementsByAttribute("tbody").first();
+			//System.out.println("tBody: "+tBody.empty());
+			System.out.println(seria.text()+" "+seria.className()+"/n");
 			
-			klasa=page.getElementsByClass("mg-option-button__option-odds ").first();
+			Elements trs;
+			try {
+				trs = mgTable.children().select("tr");
+				System.out.println(trs.size());
+			
+	
+		
+			start(trs);
+		
+		
+		
+		
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				System.out.println("trs not popoulated");
+			}
+			
+			
+			
+			System.out.println("counter: "+Integer.valueOf(count));
+			System.out.println("wyjatki: "+exceptions);
+			
+			//klasa=page.getElementsByClass("mg-option-button__option-odds ").first();
 			//String wynik = klasa.toString();
-			System.out.println(klasa.toString());
+			//System.out.println(klasa.text());
+			
 			
 		} catch (IOException e) {
 			System.out.println("stron anei zaladowana");
@@ -54,6 +89,77 @@ public class main {
 		
 		
 		}
+	public static void start(Elements trs){
+			
+			int count=0,exceptions=0;
+			String tabelaSeria="",czas,mecz,A="",X="",B="";
+			boolean isNew=false;
+		
+		for (Element element1 : trs) 
+		{
+			
+		
+				String readClass =element1.attr("class");
+				Element mgGroupHeader,tempClass;
+				
+				
+				
+				
+				
+				try { 
+					isNew=false;
+				    mgGroupHeader = element1.getElementsByClass("mg-group-header").first();
+					String ssss =(mgGroupHeader.tagName());
+					tabelaSeria = mgGroupHeader.getElementsByClass("mg-group-header-link").text();
+					isNew=true; //jesli wystapi wyjatek nie przelaczy sie
+					
+					}
+						
+					
+			    catch (Exception e) 
+					{
+						exceptions++;
+					}
+				if(isNew){System.out.println(tabelaSeria);}
+				
+				
+				if( readClass.equals("mg-event-row"))
+				{	
+					try {
+						tempClass = element1.getElementsByClass("mg-column mg-datetime-column").first();
+						czas= tempClass.text();
+						tempClass = element1.getElementsByClass("mg-column mg-event-name-column").first();
+						mecz = tempClass.text();
+						tempClass = element1.getElementsByClass("mg-result-column3").first();
+						 
+						try {
+							
+							Elements tds = tempClass.children().select("td"); // 3 td z wynikami AxB
+							A=tds.get(0).text();
+							X=tds.get(1).text();
+							B=tds.get(2).text();
+						} catch (Exception e) {
+							System.out.println("tds error");
+						}
+						
+						
+						System.out.println(czas+" "+mecz+" "+A+" "+X+" "+B);
+					
+					} catch (Exception e) {
+						System.out.println("clas not found");
+					}
+					
+					//System.out.println(element.tagName());
+					count++;
+					//System.out.println(element.text());
+				}
+		}
+	}
+	
+	
+	
+	
+	
 	
 	public int wyswietlWyniki()
 	{
