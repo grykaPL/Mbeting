@@ -9,7 +9,7 @@ import com.google.common.collect.Table;
 
 
 public class main {
-
+//test
 	private static String google="http://www.google.com";
 
 	public static void main(String[] args) {
@@ -24,7 +24,7 @@ public class main {
 		
 		try {
 			Document page = Jsoup.connect(url).get();
-			System.out.println("Strona: ''"+page.title()+"'' za³adowana");
+			System.out.println("Strona: ''"+page.title()+"'' zaï¿½adowana");
 			Elements mgTables =page.getElementsByClass("mg-table");
 			Element mgTable = mgTables.get(0);                                     //pobiera pierwsza tabele z wynikami
 			System.out.println("mgTable:  "+ mgTable.text());
